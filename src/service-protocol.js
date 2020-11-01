@@ -34,7 +34,7 @@ class ServiceProtocol {
 
   }
 
-  async invoke(method, version, params) {
+  async invoke(method, version, params, turnOn) {
   
     const response = await this.bravia._request({
       path: `/${this.protocol}`,
@@ -43,7 +43,8 @@ class ServiceProtocol {
         method: method,
         version: version || '1.0',
         params: params ? [params] : []
-      }
+      },
+      turnOn: turnOn
     });
 
     if (response.data.results) {
