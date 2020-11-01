@@ -347,7 +347,7 @@ class Bravia {
       }
       
       if(response.data.error) {
-        if(response.data.error.includes(40005)){ //display off
+        if(response.data.error.includes(40005) && opts.turnOn){ //display off
           await this.wake();
           await TIMEOUT(500);
           response = await this._request(opts);
