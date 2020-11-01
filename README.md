@@ -67,7 +67,26 @@ To use the API with the PIN procedure, a token must first be created. Afterwards
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 and create a Token.
-let bravia = new Bravia({host: '192.168.1.2', port: 80, name: 'MyTV', pin: true});
+let bravia = new Bravia({host: '192.168.1.2', port: 80, pin: true});
+
+```javascript
+async function example(){
+
+  try {
+  
+    // Generate credentials
+    const credentials = await bravia.pair({name: 'MyTV'});
+    
+    console.log(credentials)
+    
+  } catch(error) {
+  
+    console.log(error);
+  
+  }
+
+}
+
 ```
 
 The PIN displayed on the TV must then be entered in the terminal. This will generate a credentials ``<Object>`` like this:
@@ -90,7 +109,6 @@ let bravia = new Bravia({host: '192.168.1.2', port: 80, token: 'A0B9B9D7580466F2
 ### Service Protocol APIs
 
 ```javascript
-
 async function example(){
 
   try {
@@ -109,6 +127,29 @@ async function example(){
     
     // Sets the speaker volume level to 50%.
     await bravia.audio.invoke('setAudioVolume', '1.0', { target: 'speaker', volume: '50' });
+    
+  } catch(error) {
+  
+    console.log(error);
+  
+  }
+
+}
+```
+
+If you want to execute a command and make sure that the TV is on so that the command to be executed can work, you can use:
+
+
+```javascript
+
+async function example(){
+
+  try {
+    
+    let turnOn = true;
+    
+    // Sets the speaker volume level to 50%.
+    await bravia.audio.invoke('setAudioVolume', '1.0', { target: 'speaker', volume: '50' }, turnOn);
     
   } catch(error) {
   
@@ -138,6 +179,38 @@ async function example(){
     // Sends multiple IRCC code signals by name and/or value. Change bravia.delay to alter time between each command sent.
     await bravia.send(['Hdmi1', 'AAAAAgAAABoAAABaAw==', 'Hdmi2', 'AAAAAgAAABoAAABbAw==']);
   
+  } catch(error) {
+  
+    console.log(error);
+  
+  }
+
+}
+```
+
+
+### Turn on TV
+
+The TV can easily be switched on via "Wake on LAN" or directly through the API. For WOL you need to enable WOL under TV settings.
+
+```javascript
+async function example(){
+
+  try {
+  
+    // Optional (Default values)
+    const options = {
+      address: '255.255.255.255',
+      num_packets: 10,
+      interval: 100
+    }
+
+    // Turn on TV through Wake on LAN (WOL)
+    await bravia.wake('33:7F:62:9F:7B:70', options, true)
+    
+    // Turn on TV through API
+    await bravia.wake()
+    
   } catch(error) {
   
     console.log(error);
