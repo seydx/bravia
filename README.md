@@ -106,7 +106,8 @@ With these generated token u can call the API without any authentication procedu
 let bravia = new Bravia({host: '192.168.1.2', port: 80, token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203'});
 ```
 
-Alternatively, the credentials can also be created using the built-in CLI. See [Command line tool]()
+Alternatively, the credentials can also be created using the built-in CLI. See below.
+
 
 ### Command line tool
 
