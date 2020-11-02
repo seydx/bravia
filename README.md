@@ -17,7 +17,7 @@ Node.js module for discovering and controlling Sony BRAVIA Android TVs. This mod
 
 ### Install with NPM
 
-``` npm install @seydx/bravia --save ```
+```sudo npm install @seydx/bravia -g ```
 
 ## Usage
 
@@ -104,6 +104,37 @@ With these generated token u can call the API without any authentication procedu
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 with Token.
 let bravia = new Bravia({host: '192.168.1.2', port: 80, token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203'});
+```
+
+Alternatively, the credentials can also be created using the built-in CLI. See [Command line tool]()
+
+### Command line tool
+
+Alternatively you can create the credentials via the built-in CLI.
+
+The bravia cli support following command:
+- **pair**: Pair with an Bravia TV
+
+The bravia cli support following arguments:
+- **\<host\>**: The address of your Bravia TV
+
+The bravia cli support following options:
+- **-n, --name**: Name for the app (Default Bravia)
+- **-p, --port**: The port of your Bravia TV (Default: 80)
+- **-t, --timeout**: The amount of time (in seconds) to wait for the response (Default 5s)
+
+**Example usage:**
+
+```
+bravia pair 192.168.178.55 -p 80 -n MyTv -t 5
+```
+
+The PIN displayed on the TV must then be entered in the terminal. This will generate a credentials ``<Object>`` like this:
+
+```javascript
+name:  MyTv
+uuid:  20879d92-1234-4ba3-a4ce-9a8444c71fa7
+token: FD53E55779F964702178CDEBF71E3BA51A6D3A5D
 ```
 
 ### Service Protocol APIs
