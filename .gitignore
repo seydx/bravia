@@ -28,3 +28,12 @@ Thumbs.db
 bower_components
 jspm_packages
 node_modules
+
+.github
+.editorconfig
+.eslintrc.json
+.gitattributes
+.gitignore
+.mergify.yml
+LICENSE
+README.md
