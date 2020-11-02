@@ -133,7 +133,9 @@ class Bravia {
           
   }
 
-  async send(codes) {
+  async send(codes, delay) {
+  
+    delay = delay ? delay : this.delay;
   
     if (typeof codes === 'string') {
       codes = [codes];
@@ -152,7 +154,8 @@ class Bravia {
         await sendCmd(ircc.value);
       }
       
-      TIMEOUT(this.delay);
+      if(codes.length > 1)
+        TIMEOUT(delay);
     
     }
     
@@ -353,8 +356,8 @@ class Bravia {
           response = await this._request(opts);
         } else if(response.data.error.includes(7) && response.data.error.includes('Illegal State')){
           response.data.result = [{
-            source: "application",
-            title: "App",
+            source: 'application',
+            title: 'App',
             uri: false
           }];
         } else {
