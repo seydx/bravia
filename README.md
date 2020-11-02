@@ -1,6 +1,6 @@
 # Sony BRAVIA
 
-Node.js module for discovering and controlling Sony BRAVIA Android TVs. This module allows you retrieve all the available service protocol API methods and invoke any of them.
+Node.js module for discovering and controlling Sony BRAVIA Android TVs. This module allows you retrieve all the available service protocol API methods and invoke any of them. All methods return a [Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 ## Setup
 
@@ -19,11 +19,7 @@ Node.js module for discovering and controlling Sony BRAVIA Android TVs. This mod
 
 ```sudo npm install @seydx/bravia -g ```
 
-## Usage
-
-All methods return a [Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
-
-### Discovery
+## Discovery
 
 ```javascript
 const Bravia = require('bravia');
@@ -50,6 +46,8 @@ async function example () {
   
 }
 ```
+
+## Authentication
 
 ### Connect to TV via PSK
 
@@ -137,6 +135,8 @@ name:  MyTv
 uuid:  20879d92-1234-4ba3-a4ce-9a8444c71fa7
 token: FD53E55779F964702178CDEBF71E3BA51A6D3A5D
 ```
+
+## Usage
 
 ### Service Protocol APIs
 
