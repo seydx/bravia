@@ -208,8 +208,11 @@ async function example(){
     // Sends an IRCC code signal by value.
     await bravia.send('AAAAAQAAAAEAAAAUAw==');
     
-    // Sends multiple IRCC code signals by name and/or value. Change bravia.delay to alter time between each command sent.
-    await bravia.send(['Hdmi1', 'AAAAAgAAABoAAABaAw==', 'Hdmi2', 'AAAAAgAAABoAAABbAw==']);
+    // Sends multiple IRCC code signals by name and/or value. Change delay to alter time between each command sent.
+    
+    const delay = 350 //in milliseconds (Default: 350)
+    
+    await bravia.send(['Hdmi1', 'AAAAAgAAABoAAABaAw==', 'Hdmi2', 'AAAAAgAAABoAAABbAw=='], delay);
   
   } catch(error) {
   
