@@ -385,8 +385,6 @@ class Bravia {
     
       if (error.response) {
         throw (`Response error, status code: ${error.response.status}.`);
-      } else if(error.code === 'ECONNABORTED'){
-        throw (`Timeout of ${this.timeout}ms exceeded!`);
       } else {
         throw error;
       } 
