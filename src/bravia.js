@@ -141,6 +141,26 @@ class Bravia {
       codes = [codes];
     }
     
+    let sendCmd = async code => {
+    
+      let body = `<?xml version="1.0"?>
+        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+            <s:Body>
+                <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+                    <IRCCCode>${code}</IRCCCode>
+                </u:X_SendIRCC>
+            </s:Body>
+        </s:Envelope>`;
+
+      await this._request({
+        path: '/IRCC',
+        json: body
+      });
+      
+      return;
+      
+    };
+    
     for(const code of codes){
     
       if (/^[A]{5}[a-zA-Z0-9]{13}[\=]{2}$/.test(code)) {
@@ -159,32 +179,11 @@ class Bravia {
     
     }
     
-    let sendCmd = async code => {
-    
-      let body = `<?xml version="1.0"?>
-        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-            <s:Body>
-                <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
-                    <IRCCCode>${code}</IRCCCode>
-                </u:X_SendIRCC>
-            </s:Body>
-        </s:Envelope>`;
-
-      await this._request({
-        path: '/IRCC',
-        body: body
-      });
-      
-      return;
-      
-    };
-    
     return;
     
   }
   
   wake(address, options, overWOL){
-  
     return new Promise((resolve, reject) => {
       if(!overWOL){
         this.system
@@ -213,7 +212,19 @@ class Bravia {
         }
       }
     });
+  }
   
+  sleep(){
+    return new Promise((resolve, reject) => {
+      this.system
+        .invoke('setPowerStatus', '1.0', { 'status': false })
+        .then(() => {
+          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
   
   async pair(user, pin){
@@ -312,7 +323,7 @@ class Bravia {
         'Content-Type': 'text/xml; charset=UTF-8',
         'SOAPACTION': '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"'
       } 
-    };
+    }; 
   
     try {
     
@@ -327,6 +338,11 @@ class Bravia {
       
         options.headers['X-Auth-PSK'] = this.psk;
      
+      }
+      
+      if(opts.turnOn){
+        await this.wake();
+        await TIMEOUT(2000);
       }
       
       let response = await axios(options);
@@ -350,10 +366,8 @@ class Bravia {
       }
       
       if(response.data.error) {
-        if(response.data.error.includes(40005) && opts.turnOn){ //display off
-          await this.wake();
-          await TIMEOUT(500);
-          response = await this._request(opts);
+        if(response.data.error.includes(40005)){ //display off
+          throw 'Display is turned off.';
         } else if(response.data.error.includes(7) && response.data.error.includes('Illegal State')){
           response.data.result = [{
             source: 'application',
@@ -370,7 +384,9 @@ class Bravia {
     } catch(error) {
     
       if (error.response) {
-        throw new Error(`Response error, status code: ${error.response.status}.`);
+        throw (`Response error, status code: ${error.response.status}.`);
+      } else if(error.code === 'ECONNABORTED'){
+        throw (`Timeout of ${this.timeout}ms exceeded!`);
       } else {
         throw error;
       } 
