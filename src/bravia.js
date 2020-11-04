@@ -36,7 +36,7 @@ class Bravia {
     this.mac = options.mac;
     this.port = options.port || 80;
     this.psk = options.psk;
-    this.timeout = options.timeout * 1000 || 5000;
+    this.timeout = options.timeout || 5000;
     
     this.authWithPIN = options.pin;
     if(!this.psk && !this.authWithPIN)
