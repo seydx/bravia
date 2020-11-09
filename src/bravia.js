@@ -366,9 +366,7 @@ class Bravia {
       }
       
       if(response.data.error) {
-        if(response.data.error.includes(40005)){ //display off
-          throw 'Display is turned off.';
-        } else if(response.data.error.includes(7) && response.data.error.includes('Illegal State')){
+        if(response.data.error.includes(7) && response.data.error.includes('Illegal State')){
           response.data.result = [{
             source: 'application',
             title: 'App',
