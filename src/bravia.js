@@ -38,6 +38,8 @@ class Bravia {
     this.psk = options.psk;
     this.timeout = options.timeout || 5000;
     
+    this._methods = [];
+    
     this.authWithPIN = options.pin;
     if(!this.psk && !this.authWithPIN)
       this.authWithPIN = true;
@@ -131,6 +133,36 @@ class Bravia {
     
     return this._codes;
           
+  }
+  
+  async getAllMethodTypes(){
+  
+    if (this._methods.length > 0) {
+      return this._methods;
+    }
+  
+    for(const key of this.protocols){
+      
+      try {
+      
+        const versions = await this[key].getVersions();
+        
+        for(const id of versions){
+          let data = await this[key].invoke('getMethodTypes', '1.0', id);
+          this._methods.push({ version: id, methods: data });
+        }
+      
+      } catch(err) {
+      
+        console.log(key)
+        console.log(err)
+      
+      }
+    
+    }
+    
+    return this._methods;
+  
   }
 
   async send(codes, delay) {
