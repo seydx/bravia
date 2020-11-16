@@ -67,7 +67,6 @@ To use the API with the PIN procedure, your credentials must first be created. A
 // Connects to a Bravia TV at 192.168.1.2:80 and create your credentials.
 let bravia = new Bravia({host: '192.168.1.2', port: 80, pin: true});
 
-```javascript
 async function example(){
 
   try {
