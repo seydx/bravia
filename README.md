@@ -93,15 +93,16 @@ The PIN displayed on the TV must then be entered in the terminal. This will gene
 {
   name: 'MyTV',
   uuid: 'e9812807-d394-407c-b657-c89a98804e65',
-  token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203'
+  token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203',
+  expires: 'Fr., 26 Apr. 2009 21:42:48 GMT+00:00'
 }
 ```
 
-With these generated token u can call the API without any authentication procedure
+With these credentials u can call the API without any authentication procedure
 
 ```javascript
-// Connects to a Bravia TV at 192.168.1.2:80 with Token.
-let bravia = new Bravia({host: '192.168.1.2', port: 80, token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203'});
+// Connects to a Bravia TV at 192.168.1.2:80 with Application Name and UUID.
+let bravia = new Bravia({host: '192.168.1.2', port: 80, name: 'MyTV', uuid: 'e9812807-d394-407c-b657-c89a98804e65'});
 ```
 
 Alternatively, the credentials can also be created using the built-in CLI. See below.
@@ -134,6 +135,7 @@ The PIN displayed on the TV must then be entered in the terminal. This will gene
 name:  MyTv
 uuid:  20879d92-1234-4ba3-a4ce-9a8444c71fa7
 token: FD53E55779F964702178CDEBF71E3BA51A6D3A5D
+expires: Fr., 26 Apr. 2009 21:42:48 GMT+00:00
 ```
 
 ## Usage
