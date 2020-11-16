@@ -60,7 +60,7 @@ let bravia = new Bravia({host: '192.168.1.2', port: 80, psk: '0000'});
 
 ### Connect to TV via PIN
 
-To use the API with the PIN procedure, a token must first be created. Afterwards this token can be used to send further requests.
+To use the API with the PIN procedure, your credentials must first be created. Afterwards this credentials can be used to send further requests.
 
 
 ```javascript
