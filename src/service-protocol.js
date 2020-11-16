@@ -27,7 +27,7 @@ class ServiceProtocol {
     
     for(const id of versions){
       let data = await this.invoke('getMethodTypes', '1.0', id);
-      this._methods.push({ version: id, methods: data });
+      this._methods.push({ endpoint: this.protocol, version: id, methods: data });
     }
     
     return this._methods;
@@ -35,7 +35,7 @@ class ServiceProtocol {
   }
 
   async invoke(method, version, params, turnOn) {
-  
+
     const response = await this.bravia._request({
       path: `/${this.protocol}`,
       json: {
@@ -52,8 +52,6 @@ class ServiceProtocol {
     } else if (response.data.result) {
       return response.data.result[(response.data.result.length > 1 ? 1 : 0)];
     }
-     
-    return;
      
   }
   

@@ -45,7 +45,10 @@ class Bravia {
       this.authWithPIN = true;
       
     this.credentials = {
-      token: options.token
+      name: options.name,
+      uuid: options.uuid,
+      token: options.token,
+      expires: options.expires
     };
     
     this.protocols = SERVICE_PROTOCOLS;
@@ -154,8 +157,8 @@ class Bravia {
       
       } catch(err) {
       
-        console.log(key)
-        console.log(err)
+        console.log(key);
+        console.log(err);
       
       }
     
@@ -259,7 +262,7 @@ class Bravia {
     });
   }
   
-  async pair(user, pin){
+  async pair(user, pin, refresh){
     
     try { 
     
@@ -270,15 +273,19 @@ class Bravia {
        
       const headers = {};
        
-      if(pin){
-       
-        headers.Authorization = 'Basic ' + base64.encode(':' + pin);
-       
-      } else if(this.token) {
-       
-        headers.Cookie = this.token;
-       
-      }
+      if(!refresh){
+      
+        if(pin){
+         
+          headers.Authorization = 'Basic ' + base64.encode(':' + pin);
+         
+        } else if(this.token) {
+         
+          headers.Cookie = this.token;
+         
+        }
+    
+      } 
         
       const post_data = `{
         "id": 8,
@@ -304,16 +311,17 @@ class Bravia {
        
       if(response.headers['set-cookie']){
     
-        this.credentials = {
+        let credentials = {
           name: user.name,
           uuid: user.uuid,
-          token: response.headers['set-cookie'][0].split(';')[0].split('auth=')[1]
+          token: response.headers['set-cookie'][0].split(';')[0].split('auth=')[1],
+          expires: response.headers['set-cookie'][0].split(';')[3].split('Expires=')[1]
         };   
     
-        return this.credentials;
+        return credentials;
     
       } else if(response.data && response.data.error && response.data.error.includes(40005)){
-       
+      
         throw new Error('Please turn on TV to handle authentication process through PIN.');
        
       } else {
@@ -361,8 +369,11 @@ class Bravia {
     
       if(this.authWithPIN){
       
-        if(!this.credentials.token)
+        if(!this.credentials.name && !this.credentials.uuid){
           this.credentials = await this.pair();
+        } else {
+          this.credentials = await this.pair(this.credentials, false, true);
+        }
       
         options.headers.Cookie = 'auth=' + this.credentials.token;
         
