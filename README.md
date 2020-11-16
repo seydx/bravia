@@ -64,7 +64,7 @@ To use the API with the PIN procedure, a token must first be created. Afterwards
 
 
 ```javascript
-// Connects to a Bravia TV at 192.168.1.2:80 and create a Token.
+// Connects to a Bravia TV at 192.168.1.2:80 and create your credentials.
 let bravia = new Bravia({host: '192.168.1.2', port: 80, pin: true});
 
 ```javascript
