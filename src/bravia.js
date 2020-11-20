@@ -151,14 +151,13 @@ class Bravia {
         const versions = await this[key].getVersions();
         
         for(const id of versions){
-          let data = await this[key].invoke('getMethodTypes', '1.0', id);
-          this._methods.push({ version: id, methods: data });
+          let data = await this[key].getMethodTypes(id);
+          this._methods.push(data);
         }
       
       } catch(err) {
       
-        console.log(key);
-        console.log(err);
+        this._methods.push({ endpoint: key, version: false, methods: [] });
       
       }
     
@@ -320,7 +319,7 @@ class Bravia {
     
         return credentials;
     
-      } else if(response.data && response.data.error && response.data.error.includes(40005)){
+      } else if(response.data && response.data.error && (response.data.error.includes(40005) || response.data.error.includes('Display Is Turned off') || response.data.error.includes('not power-on'))){
       
         throw new Error('Please turn on TV to handle authentication process through PIN.');
        
