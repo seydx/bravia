@@ -148,16 +148,14 @@ class Bravia {
       
       try {
       
-        const versions = await this[key].getVersions();
-        
-        for(const id of versions){
-          let data = await this[key].getMethodTypes(id);
-          this._methods.push(data);
-        }
+        let data = await this[key].getMethodTypes();
+        this._methods.push(data);
       
       } catch(err) {
       
-        this._methods.push({ endpoint: key, version: false, methods: [] });
+        console.log(err);
+      
+        this._methods.push([{ endpoint: key, version: false, methods: [] }]);
       
       }
     
