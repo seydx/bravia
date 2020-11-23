@@ -223,11 +223,12 @@ class Bravia {
         if (!ircc) {
           return new Error(`Unknown IRCC code ${code}.`);
         }
+        requestDebug('Send ircc command %s (%s)', ircc.name, ircc.value)
         await sendCmd(ircc.value);
       }
       
       if(codes.length > 1)
-        TIMEOUT(delay);
+        await TIMEOUT(delay);
     
     }
     
