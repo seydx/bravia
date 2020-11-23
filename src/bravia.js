@@ -8,6 +8,11 @@ const SsdpClient = require('node-ssdp').Client;
 const URL = require('url');
 const wol = require('wake_on_lan'); 
 
+const debug = require('debug');
+const braviaDebug = debug('bravia');
+const requestDebug = debug('bravia:request');
+const discoveryDebug = debug('bravia:discovery');
+
 const ServiceProtocol = require('./service-protocol');
 
 const SSDP_SERVICE_TYPE = 'urn:schemas-sony-com:service:IRCC:1';
@@ -35,12 +40,13 @@ class Bravia {
     this.host = options.host;
     this.mac = options.mac;
     this.port = options.port || 80;
+    this.timeout = options.timeout && options.timeout < 1000
+      ? options.timeout * 1000
+      : 5000;
+    
     this.psk = options.psk;
-    this.timeout = options.timeout || 5000;
-    
-    this._methods = [];
-    
     this.authWithPIN = options.pin;
+    
     if(!this.psk && !this.authWithPIN)
       this.authWithPIN = true;
       
@@ -48,19 +54,30 @@ class Bravia {
       name: options.name,
       uuid: options.uuid,
       token: options.token,
-      expires: options.expires
+      expires: false
     };
     
     this.protocols = SERVICE_PROTOCOLS;
     this.delay = DEFAULT_TIME_BETWEEN_COMMANDS;
 
     for (let key in this.protocols) {
+      braviaDebug('Creating service /' + this.protocols[key]);
       let protocol = this.protocols[key];
       this[protocol] = new ServiceProtocol(this, protocol);
     }
 
     this._url = `http://${this.host}:${this.port}/sony`;
+    
+    braviaDebug('Using url %s', this._url);
+    
+    if(this.psk)
+      braviaDebug('Using PSK (%s) for authentication.', this.psk);
+      
+    if(this.authWithPIN)
+      braviaDebug('Using PIN for authentication %O', this.credentials);
+    
     this._codes = [];
+    this._methods = [];
   }
 
   async discover(timeout) {
@@ -110,7 +127,9 @@ class Bravia {
         }
       }
     });
-      
+    
+    discoveryDebug('Starting discovery.');
+   
     ssdp.search(SSDP_SERVICE_TYPE);
 
     let failed = error => {
@@ -119,7 +138,10 @@ class Bravia {
     };
     
     await TIMEOUT((timeout*1000||5000));
-
+    
+    discoveryDebug('Timeout (%ds) reached. Stopping discovery.', timeout);
+    discoveryDebug('Found %d devices', discovered.length);
+   
     ssdp.stop();
     
     return discovered;
@@ -153,8 +175,6 @@ class Bravia {
       
       } catch(err) {
       
-        console.log(err);
-      
         this._methods.push([{ endpoint: key, version: false, methods: [] }]);
       
       }
@@ -186,7 +206,7 @@ class Bravia {
 
       await this._request({
         path: '/IRCC',
-        json: body
+        body: body
       });
       
       return;
@@ -235,6 +255,10 @@ class Bravia {
             num_packets: options.num_packets || 10,
             interval: options.interval || 100
           };
+          
+          requestDebug('Sending magic packets to %s', address);
+          requestDebug('WOL Options %O', options);
+          
           wol.wake(address, options, function(error) {
             if(error) return reject(error);
             resolve('Magic packets send to ' + address);
@@ -267,22 +291,32 @@ class Bravia {
       
       user.name = user.name || 'Bravia';
       user.uuid = user.uuid || this.genUUID();
+      
+      requestDebug('Credentials %O', user);
        
       const headers = {};
        
       if(!refresh){
       
         if(pin){
+          
+          requestDebug('Using PIN (%s) for authentication', pin);
          
           headers.Authorization = 'Basic ' + base64.encode(':' + pin);
          
         } else if(this.token) {
+          
+          requestDebug('Using Token (%s) for authentication', this.token);
          
           headers.Cookie = this.token;
          
         }
     
-      } 
+      } else {
+        
+        requestDebug('Refreshing token with given credentials %O', this.credentials);
+        
+      }
         
       const post_data = `{
         "id": 8,
@@ -313,7 +347,9 @@ class Bravia {
           uuid: user.uuid,
           token: response.headers['set-cookie'][0].split(';')[0].split('auth=')[1],
           expires: response.headers['set-cookie'][0].split(';')[3].split('Expires=')[1]
-        };   
+        };
+        
+        requestDebug('New token %s', credentials.token);
     
         return credentials;
     
@@ -355,13 +391,16 @@ class Bravia {
       timeout: this.timeout,
       url: this._url + opts.path,
       method: 'post',
-      data: opts.json,
+      data: opts.json || opts.body,
       headers: {
         'Content-Type': 'text/xml; charset=UTF-8',
         'SOAPACTION': '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"'
       } 
     }; 
-  
+    
+    requestDebug('Initializing request for %s', options.url);
+    requestDebug('Request data %O', options.data);
+    
     try {
     
       if(this.authWithPIN){
@@ -380,7 +419,10 @@ class Bravia {
      
       }
       
+      requestDebug('Request options %O', options.headers);
+      
       if(opts.turnOn){
+        requestDebug('Additional request parameter: turnOnTv for request (true)');
         await this.wake();
         await TIMEOUT(2000);
       }
