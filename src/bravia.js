@@ -218,7 +218,7 @@ class Bravia {
       if (/^[A]{5}[a-zA-Z0-9]{13}[\=]{2}$/.test(code)) {
         await sendCmd(code);
       } else {
-        const response = this.getIRCCCodes();
+        const response = await this.getIRCCCodes();
         let ircc = response.find(ircc => ircc.name === code);
         if (!ircc) {
           return new Error(`Unknown IRCC code ${code}.`);
