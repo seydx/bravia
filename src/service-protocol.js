@@ -135,7 +135,7 @@ class ServiceProtocol {
    
     } else {
    
-      throw new Error('Requested method (%s) could not be found!', method);
+      throw new Error('Requested method (' + method + ') could not be found!');
       
     }
     
