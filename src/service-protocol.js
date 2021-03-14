@@ -147,7 +147,9 @@ class ServiceProtocol {
    
     } else {
    
-      throw new Error('Requested method (' + method + ') could not be found!');
+      this.debug('Requested method (' + method + ') could not be found!);
+      
+      return false;
       
     }
     
@@ -162,7 +164,9 @@ class ServiceProtocol {
     
     if(method !== 'getVersions' && method !== 'getMethodTypes'){
       apiMethod = await this.checkApiMethod(method, version, params);
-      version = apiMethod.version;
+      version = apiMethod
+        ? apiMethod.version
+        : version;
     }
       
     this.debug('Executing action %s (%s)', method, version);
