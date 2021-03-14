@@ -389,7 +389,7 @@ class Bravia {
   async _request(opts) {
   
     const options = {
-      timeout: this.timeout,
+      //timeout: this.timeout,
       url: this._url + opts.path,
       method: 'post',
       data: opts.json || opts.body,
