@@ -147,7 +147,7 @@ class ServiceProtocol {
    
     } else {
    
-      this.debug('Requested method (' + method + ') could not be found!);
+      this.debug('Requested method (' + method + ') could not be found!');
       
       return false;
       
