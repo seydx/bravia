@@ -116,7 +116,6 @@ The bravia cli support following arguments:
 The bravia cli support following options:
 - **-n, --name**: Name for the app (Default Bravia)
 - **-p, --port**: The port of your Bravia TV (Default: 80)
-- **-t, --timeout**: The amount of time (in seconds) to wait for the response (Default 5s)
 
 **Example usage:**
 
