@@ -189,6 +189,10 @@ async function ircc(){
 
 The TV can easily be switched on via "Wake on LAN" or directly through the API. For WOL you need to enable WOL under TV settings.
 
+Note: Only the screen from TVs in "PRO" mode can be switched ON with Wake-on-LAN. If your TV is in "NORMAL" mode and in standby, you need to enable the Rest API with WOL to perform API calls. 
+
+More info: https://pro-bravia.sony.net/develop/integrate/ip-control/index.html#wake-on-lan
+
 ```javascript
 async function turnOnTV(){
   try {
