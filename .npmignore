@@ -54,11 +54,9 @@ yarn.lock
 .yarn-integrity
 
 # dotenv environment variables file
-.envtest/
+.env
+test/
 .github
 .vscode
-demo
-example-config.json
 .prettierrc.json
 .eslintrc.js
-images/hb_braviatvos_ui_final.gif
