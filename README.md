@@ -121,7 +121,7 @@ The bravia cli support following options:
 **Example usage:**
 
 ```
-bravia pair 192.168.178.55 -p 80 -n MyTv -t 5
+bravia pair 192.168.178.55 -p 80 -n MyTv
 ```
 
 The PIN displayed on the TV must then be entered in the terminal. This will generate a credentials ``<Object>`` like this:
