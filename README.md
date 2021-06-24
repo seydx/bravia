@@ -24,26 +24,17 @@ Node.js module for discovering and controlling Sony BRAVIA Android TVs. This mod
 ```javascript
 const Bravia = require('bravia');
 
-// The time in seconds for the bravia discovery to scan for.
-let timeout = 5;
-
-async function example () {
-
+async function discover () {
   try {
-  
     // Attempts to discover any Sony Bravia TVs.
-    const devices = await Bravia.discover(timeout);
+    const devices = await Bravia.discover();
     
-    for (let device in devices) {
+    for (const device in devices) {
       console.log(devices[device]);
     }
-    
   } catch (error) {
-  
-    console.error(error);
-    
+    console.error(error);    
   }
-  
 }
 ```
 
@@ -52,9 +43,10 @@ async function example () {
 ### Connect to TV via PSK
 
 ```javascript
+const Bravia = require('bravia');
 
 // Connects to a Bravia TV at 192.168.1.2:80 with the PSK 0000.
-let bravia = new Bravia({host: '192.168.1.2', port: 80, psk: '0000'});
+const bravia = new Bravia({host: '192.168.1.2', port: 80, psk: '0000'});
 
 ```
 
@@ -65,23 +57,18 @@ To use the API with the PIN procedure, your credentials must first be created. A
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 and create your credentials.
-let bravia = new Bravia({host: '192.168.1.2', port: 80, pin: true});
+const Bravia = require('bravia');
+
+const name = 'MyTV'; // Default: @seydx/bravia
+const bravia = new Bravia({name: name, host: '192.168.1.2', port: 80, pin: true});
 
 async function example(){
-
   try {
-  
-    // Generate credentials
-    const credentials = await bravia.pair({name: 'MyTV'});
-    
+    const credentials = await bravia.pair();
     console.log(credentials)
-    
   } catch(error) {
-  
     console.log(error);
-  
   }
-
 }
 
 ```
@@ -101,7 +88,16 @@ With these credentials u can call the API without any authentication procedure
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 with Application Name and UUID.
-let bravia = new Bravia({host: '192.168.1.2', port: 80, name: 'MyTV', uuid: 'e9812807-d394-407c-b657-c89a98804e65'});
+const Bravia = require('bravia');
+
+const credentials = {
+  name: 'MyTV',
+  uuid: 'e9812807-d394-407c-b657-c89a98804e65',
+  token: 'A0B9B9D7580466F22EE8F8EA148863774ACCE203',
+  expires: 'Fr., 26 Apr. 2009 21:42:48 GMT+00:00'
+}
+
+const bravia = new Bravia({host: '192.168.1.2', port: 80, ...credentials});
 ```
 
 Alternatively, the credentials can also be created using the built-in CLI. See below.
@@ -142,85 +138,50 @@ expires: Fr., 26 Apr. 2009 21:42:48 GMT+00:00
 ### Service Protocol APIs
 
 ```javascript
-async function example(){
-
+async function api(){
   try {
-  
-    // Retrieves all the system method type versions.
-    const versions = await bravia.system.getVersions();
-    
     // Retrieves all the system method types and versions.
-    const methods = await bravia.system.getMethodTypes();
+    const methods = await bravia.describe();
+    console.log(methods.body);
     
     // Retrieves all the available IRCC commands from the TV.
-    const commands = await bravia.system.invoke('getRemoteControllerInfo');
+    const commands = await bravia.exec('system', 'getRemoteControllerInfo');
+    console.log(commands.body);
     
     // Queries the volume info.
-    const volume = await bravia.audio.invoke('getVolumeInformation');
+    const volume = await bravia.exec('audio', 'getVolumeInformation');
+    console.log(volume.body);
     
     // Sets the speaker volume level to 50%.
-    await bravia.audio.invoke('setAudioVolume', '1.0', { target: 'speaker', volume: '50' });
-    
+    await bravia.exec('audio', 'setAudioVolume', '1.0', { target: 'speaker', volume: '50' });
   } catch(error) {
-  
     console.log(error);
-  
   }
-
 }
 ```
 
-If you want to execute a command and make sure that the TV is on so that the command to be executed can work, you can use:
-
-
-```javascript
-
-async function example(){
-
-  try {
-    
-    let turnOn = true;
-    
-    // Sets the speaker volume level to 50%.
-    await bravia.audio.invoke('setAudioVolume', '1.0', { target: 'speaker', volume: '50' }, turnOn);
-    
-  } catch(error) {
-  
-    console.log(error);
-  
-  }
-
-}
-```
 
 ### Send IRCC Code
 
 ```javascript
-async function example(){
-
+async function ircc(){
   try {
-  
     // Retrieves all the available IRCC commands from the TV.
     const commands = await bravia.getIRCCCodes();
     
     // Sends an IRCC code signal by name.
-    await bravia.send('Mute');
+    await bravia.execCommand('Mute');
     
     // Sends an IRCC code signal by value.
-    await bravia.send('AAAAAQAAAAEAAAAUAw==');
+    await bravia.execCommand('AAAAAQAAAAEAAAAUAw==');
     
     // Sends multiple IRCC code signals by name and/or value. Change delay to alter time between each command sent.
-    
     const delay = 350 //in milliseconds (Default: 350)
     
-    await bravia.send(['Hdmi1', 'AAAAAgAAABoAAABaAw==', 'Hdmi2', 'AAAAAgAAABoAAABbAw=='], delay);
-  
+    await bravia.execCommand(['Hdmi1', 'AAAAAgAAABoAAABaAw==', 'Hdmi2', 'AAAAAgAAABoAAABbAw=='], delay);
   } catch(error) {
-  
     console.log(error);
-  
   }
-
 }
 ```
 
@@ -230,10 +191,8 @@ async function example(){
 The TV can easily be switched on via "Wake on LAN" or directly through the API. For WOL you need to enable WOL under TV settings.
 
 ```javascript
-async function example(){
-
+async function turnOnTV(){
   try {
-  
     // Optional (Default values)
     const options = {
       address: '255.255.255.255',
@@ -242,16 +201,12 @@ async function example(){
     }
 
     // Turn on TV through Wake on LAN (WOL)
-    await bravia.wake('33:7F:62:9F:7B:70', options, true)
+    await bravia.wake('33:7F:62:9F:7B:70', options)
     
     // Turn on TV through API
-    await bravia.wake()
-    
+    await bravia.exec('system', 'setPowerStatus', '1.0', { status: true })
   } catch(error) {
-  
     console.log(error);
-  
   }
-
 }
 ```
