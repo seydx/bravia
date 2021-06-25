@@ -1,7 +1,7 @@
 {
   "name": "@seydx/bravia",
   "description": "Node.js module for discovering and controlling Sony BRAVIA Android TVs",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "keywords": [
     "sony",
     "bravia",
@@ -31,7 +31,6 @@
     "node": ">=5.0.0"
   },
   "dependencies": {
-    "base-64": "^1.0.0",
     "caporal": "^1.4.0",
     "debug": "^4.3.1",
     "enquirer": "^2.3.6",
