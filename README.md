@@ -192,22 +192,22 @@ async function turnOnTV(){
 
 The bravia cli support following commands:
 
-- **pair** <host> -p -n: Pair with a Bravia TV or refresh existing token (PIN Authentication)
-  - <host> (required): Bravia TV ip address.
-  - -p, --port (optional): Bravia TV port (Default: 80)
-  - -n, --name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
-- **methods** <host> -p: Retrieves all the system method types and versions
-  - <host> (required): Bravia TV ip address.
-  - -p, --port (optional): Bravia TV port (Default: 80)
-- **exec** <host> <protocol> <service> <version> <command> -p -n: Execute API call
-  - <host> (required): Bravia TV ip address.
-  - <protocol> (required): API Protocol (Endpoint)
-  - <service> (required): API Service
-  - <version> (optional): API Service Version (Default: '1.0')
-  - <command> (optional): API Command (Default: {})
-  - -p, --port (optional): Bravia TV port (Default: 80)
-  - -n, --name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
-  - --psk (optional): Pre-Shared Key (if not set, PIN authentication will be used)
+- **pair** \<host> -p -n: Pair with a Bravia TV or refresh existing token (PIN Authentication)
+  - \<host> (required): Bravia TV ip address.
+  - -p, \--port (optional): Bravia TV port (Default: 80)
+  - -n, \--name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
+- **methods** \<host> -p: Retrieves all the system method types and versions
+  - \<host> (required): Bravia TV ip address.
+  - -p, \--port (optional): Bravia TV port (Default: 80)
+- **exec** \<host> \<protocol> \<service> \<version> \<command> -p -n: Execute API call
+  - \<host> (required): Bravia TV ip address.
+  - \<protocol> (required): API Protocol (Endpoint)
+  - \<service> (required): API Service
+  - \<version> (optional): API Service Version (Default: '1.0')
+  - \<command> (optional): API Command (Default: {})
+  - -p, \--port (optional): Bravia TV port (Default: 80)
+  - -n, \--name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
+  - \--psk (optional): Pre-Shared Key (if not set, PIN authentication will be used)
 - **discover**: Discover alls your TVs in network
 
 
