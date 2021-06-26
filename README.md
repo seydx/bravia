@@ -101,36 +101,9 @@ const credentials = {
 const bravia = new Bravia({host: '192.168.1.2', port: 80, ...credentials});
 ```
 
-Alternatively, the credentials can also be created using the built-in CLI. See below.
+Alternatively, the credentials can also be created using the built-in CLI. See [#CLI](https://github.com/SeydX/bravia#command-line-tool)
 
 
-### Command line tool
-
-Alternatively you can create the credentials via the built-in CLI.
-
-The bravia cli support following command:
-- **pair**: Pair with an Bravia TV
-
-The bravia cli support following arguments:
-- **\<host\>**: The address of your Bravia TV
-
-The bravia cli support following options:
-- **-n, --name**: Name for the app (Default Bravia)
-- **-p, --port**: The port of your Bravia TV (Default: 80)
-
-**Example usage:**
-
-```
-bravia pair 192.168.178.55 -p 80 -n MyTv
-```
-
-The PIN displayed on the TV must then be entered in the terminal. This will generate a credentials ``<Object>`` like this:
-
-```javascript
-name:  MyTv
-uuid:  20879d92-1234-4ba3-a4ce-9a8444c71fa7
-token: FD53E55779F964702178CDEBF71E3BA51A6D3A5D
-expires: Fr., 26 Apr. 2009 21:42:48 GMT+00:00
 ```
 
 ## Usage
@@ -214,3 +187,40 @@ async function turnOnTV(){
   }
 }
 ```
+
+### Command line tool
+
+The bravia cli support following commands:
+
+- **pair** <host> -p -n: Pair with a Bravia TV or refresh existing token (PIN Authentication)
+  - <host> (required): Bravia TV ip address.
+  - -p, --port (optional): Bravia TV port (Default: 80)
+  - -n, --name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
+- **methods** <host> -p: Retrieves all the system method types and versions
+  - <host> (required): Bravia TV ip address.
+  - -p, --port (optional): Bravia TV port (Default: 80)
+- **exec** <host> <protocol> <service> <version> <command> -p -n: Execute API call
+  - <host> (required): Bravia TV ip address.
+  - <protocol> (required): API Protocol (Endpoint)
+  - <service> (required): API Service
+  - <version> (optional): API Service Version (Default: '1.0')
+  - <command> (optional): API Command (Default: {})
+  - -p, --port (optional): Bravia TV port (Default: 80)
+  - -n, --name (optional): Custom name (Used for PIN Authentication, Default: '@seydx/bravia')
+  - --psk (optional): Pre-Shared Key (if not set, PIN authentication will be used)
+- **discover**: Discover alls your TVs in network
+
+
+**Example usage for PIN Authentication:**
+
+```
+bravia pair 192.168.178.55 -p 80 -n MyTv
+```
+
+The PIN displayed on the TV must then be entered in the terminal. This will generate a credentials ``<Object>`` like this:
+
+```javascript
+name:  MyTv
+uuid:  20879d92-1234-4ba3-a4ce-9a8444c71fa7
+token: FD53E55779F964702178CDEBF71E3BA51A6D3A5D
+expires: Fr., 26 Apr. 2009 21:42:48 GMT+00:00
