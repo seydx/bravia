@@ -23,11 +23,12 @@ Node.js module for discovering and controlling Sony BRAVIA Android TVs. This mod
 
 ```javascript
 const Bravia = require('bravia');
+const bravia = new Bravia();
 
 async function discover () {
   try {
     // Attempts to discover any Sony Bravia TVs.
-    const devices = await Bravia.discover();
+    const devices = await bravia.discover();
     
     for (const device in devices) {
       console.log(devices[device]);
@@ -43,9 +44,9 @@ async function discover () {
 ### Connect to TV via PSK
 
 ```javascript
+// Connects to a Bravia TV at 192.168.1.2:80 with the PSK 0000.
 const Bravia = require('bravia');
 
-// Connects to a Bravia TV at 192.168.1.2:80 with the PSK 0000.
 const bravia = new Bravia({host: '192.168.1.2', port: 80, psk: '0000'});
 
 ```
@@ -198,7 +199,7 @@ async function turnOnTV(){
   try {
     // Optional (Default values)
     const options = {
-      address: '255.255.255.255',
+      subnet: '255.255.255.255',
       num_packets: 10,
       interval: 100
     }
