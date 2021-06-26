@@ -211,7 +211,7 @@ The bravia cli support following commands:
 - **discover**: Discover alls your TVs in network
 
 
-**Example usage for PIN Authentication:**
+#### Example usage for PIN Authentication
 
 ```
 bravia pair 192.168.178.55 -p 80 -n MyTv
