@@ -104,8 +104,6 @@ const bravia = new Bravia({host: '192.168.1.2', port: 80, ...credentials});
 Alternatively, the credentials can also be created using the built-in CLI. See [#CLI](https://github.com/SeydX/bravia#command-line-tool)
 
 
-```
-
 ## Usage
 
 ### Service Protocol APIs
