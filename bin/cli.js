@@ -81,7 +81,7 @@ cli
       });
 
       const response = await bravia.exec(args.protocol, args.service, args.version || '1.0', command);
-      console.log(response.body);
+      console.log(response);
 
       process.exit();
     } catch (error) {
@@ -91,7 +91,7 @@ cli
       process.exit();
     }
   })
-  
+
   .command('discover', 'Discover alls your TVs in network')
   .action(async (args, options, logger) => {
     try {

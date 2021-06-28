@@ -115,15 +115,15 @@ async function api(){
   try {
     // Retrieves all the system method types and versions.
     const methods = await bravia.describe();
-    console.log(methods.body);
+    console.log(methods);
     
     // Retrieves all the available IRCC commands from the TV.
     const commands = await bravia.exec('system', 'getRemoteControllerInfo');
-    console.log(commands.body);
+    console.log(commands);
     
     // Queries the volume info.
     const volume = await bravia.exec('audio', 'getVolumeInformation');
-    console.log(volume.body);
+    console.log(volume);
     
     // Sets the speaker volume level to 50%.
     await bravia.exec('audio', 'setAudioVolume', '1.0', { target: 'speaker', volume: '50' });
