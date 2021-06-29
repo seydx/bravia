@@ -1,7 +1,7 @@
 {
   "name": "@seydx/bravia",
   "description": "Node.js module for discovering and controlling Sony BRAVIA Android TVs",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "keywords": [
     "sony",
     "bravia",
@@ -23,7 +23,7 @@
     "url": "https://github.com/seydx/bravia/issues"
   },
   "license": "MIT",
-  "main": "src/bravia.js",
+  "main": "./lib/bravia.js",
   "bin": {
     "bravia": "./bin/cli.js"
   },
