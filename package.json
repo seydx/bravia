@@ -1,7 +1,7 @@
 {
   "name": "@seydx/bravia",
   "description": "Node.js module for discovering and controlling Sony BRAVIA Android TVs",
-  "version": "2.0.0-beta.10",
+  "version": "2.0.0-beta.11",
   "keywords": [
     "sony",
     "bravia",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "caporal": "^1.4.0",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "enquirer": "^2.3.6",
     "got": "^11.8.2",
     "node-ssdp": "^4.0.1",
@@ -40,13 +40,13 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@babel/core": "7.14.6",
-    "@babel/eslint-parser": "7.14.7",
+    "@babel/core": "7.15.5",
+    "@babel/eslint-parser": "7.15.4",
     "@babel/eslint-plugin": "7.14.5",
-    "eslint": "^7.29.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2"
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
   }
 }
