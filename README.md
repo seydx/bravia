@@ -17,12 +17,12 @@ Node.js module for discovering and controlling Sony BRAVIA Android TVs. This mod
 
 ### Install with NPM
 
-```sudo npm install @seydx/bravia -g ```
+```sudo npm install @seydx/bravia@beta -g ```
 
 ## Discovery
 
 ```javascript
-const Bravia = require('bravia');
+const Bravia = require('@seydx/bravia');
 const bravia = new Bravia();
 
 async function discover () {
@@ -45,7 +45,7 @@ async function discover () {
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 with the PSK 0000.
-const Bravia = require('bravia');
+const Bravia = require('@seydx/bravia');
 
 const bravia = new Bravia({host: '192.168.1.2', port: 80, psk: '0000'});
 
@@ -58,7 +58,7 @@ To use the API with the PIN procedure, your credentials must first be created. A
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 and create your credentials.
-const Bravia = require('bravia');
+const Bravia = require('@seydx/bravia');
 
 const name = 'MyTV'; // Default: '@seydx/bravia'
 const bravia = new Bravia({name: name, host: '192.168.1.2', port: 80, pin: true});
@@ -89,7 +89,7 @@ With these credentials u can call the API without any authentication procedure
 
 ```javascript
 // Connects to a Bravia TV at 192.168.1.2:80 with Application Name and UUID.
-const Bravia = require('bravia');
+const Bravia = require('@seydx/bravia');
 
 const credentials = {
   name: 'MyTV',
