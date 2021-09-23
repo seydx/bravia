@@ -4,7 +4,7 @@
 
 ## Notable Changes
 - PIN authentication
-- Checking available method types
+- Checking available protocols, services and method types
 - Improved CLI
 
 ## Other Changes
