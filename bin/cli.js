@@ -81,7 +81,7 @@ cli
       });
 
       const response = await bravia.exec(args.protocol, args.service, args.version || '1.0', command);
-      console.log(response);
+      console.log(JSON.stringify(response, null, 2));
 
       process.exit();
     } catch (error) {
@@ -99,7 +99,7 @@ cli
       const devices = await bravia.discover();
 
       for (const device in devices) {
-        console.log(devices[device]);
+        console.log(JSON.stringify(devices[device], null, 2));
       }
 
       process.exit();
